@@ -1,14 +1,18 @@
-# Use official Java runtime
-FROM openjdk:17-jdk-slim
+# Use an official Node.js runtime as the base image
+FROM node:14
 
-# Set working directory
+# Set the working directory
 WORKDIR /app
 
-# Copy the packaged JAR file
-COPY target/inventory-management-system.jar app.jar
+# Copy the package.json and install dependencies
+COPY package*.json ./
+RUN npm install
 
-# Expose application port
+# Copy the rest of the application code
+COPY . .
+
+# Expose the port the app will run on
 EXPOSE 8080
 
-# Run the JAR file
-ENTRYPOINT ["java", "-jar", "app.jar"]
+# Define the command to run your app
+CMD ["node", "server.js"]
